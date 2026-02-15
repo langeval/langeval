@@ -1,75 +1,78 @@
 # LangEval - Enterprise AI Agent Evaluation Platform
 
+[English](README.md) | [Tiếng Việt](README.vi.md)
+
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/status-Active_Development-green.svg)]()
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Documentation](https://img.shields.io/badge/docs-read%20now-F9A825?logo=bookstack)](evaluation-ui/docs)
 
-**LangEval** là nền tảng đánh giá AI Agent (Agentic Evaluation Platform) cấp doanh nghiệp, tiên phong trong việc áp dụng chiến lược **Active Testing** (Kiểm thử chủ động) và **User Simulation** (Giả lập người dùng) để đảm bảo chất lượng, an toàn và hiệu năng cho các hệ thống Generative AI trước khi đưa ra thị trường.
+**LangEval** is an enterprise-grade AI Agentic Evaluation Platform, pioneering the application of **Active Testing** and **User Simulation** strategies to ensure the quality, safety, and performance of Generative AI systems before they reach the market.
 
-Khác với các công cụ giám sát thụ động (Passive Monitoring) chỉ "bắt lỗi" khi sự cố đã xảy ra, LangEval cho phép bạn chủ động "tấn công" (Red-Teaming), stress-test và đánh giá Agent trong môi trường Sandbox an toàn.
-
----
-
-## 📑 Mục Lục
-
-1.  [Tại Sao Chọn LangEval?](#-tại-sao-chọn-langeval)
-2.  [Tính Năng Cốt Lõi](#-tính-năng-cốt-lõi)
-3.  [Kiến Trúc Hệ Thống](#-kiến-trúc-hệ-thống)
-4.  [Công Nghệ Sử Dụng](#-công-nghệ-sử-dụng)
-5.  [Cấu Trúc Dự Án](#-cấu-trúc-dự-án)
-6.  [Hướng Dẫn Cài Đặt Chi Tiết](#-hướng-dẫn-cài-đặt-chi-tiết)
-7.  [Lộ Trình Phát Triển (Roadmap)](#-lộ-trình-phát-triển)
-8.  [Tài Liệu Tham Khảo](#-tài-liệu-tham-khảo)
-9.  [Đóng Góp](#-đóng-góp)
+Unlike passive monitoring tools that only "catch errors" after an incident has occurred, LangEval allows you to proactively "attack" (Red-Teaming), stress-test, and evaluate Agents in a safe Sandbox environment.
 
 ---
 
-## 💡 Tại Sao Chọn LangEval?
+## 📑 Table of Contents
 
-Trong kỷ nguyên Agentic AI, các phương pháp đánh giá truyền thống (dựa trên text similarity) không còn đủ. LangEval giải quyết các bài toán khó nhất của Enterprise AI:
-
-*   **Đánh giá hành vi (Behavioral Eval)**: Agent có tuân thủ quy trình nghiệp vụ (SOP) không? Có gọi đúng Tool không?
-*   **An toàn & Bảo mật (Safety & Security)**: Agent có bị Jailbreak không? Có làm lộ PII không?
-*   **Tự động hóa (Automation)**: Làm sao test 1000 kịch bản hội thoại mà không cần 1000 tester?
-*   **Bảo mật dữ liệu (Data Privacy)**: Chạy hoàn toàn On-Premise/Private Cloud, không gửi dữ liệu nhạy cảm ra ngoài.
+1.  [Why Choose LangEval?](#-why-choose-langeval)
+2.  [Core Features](#-core-features)
+3.  [System Architecture](#-system-architecture)
+4.  [Technology Stack](#-technology-stack)
+5.  [Project Structure](#-project-structure)
+6.  [Detailed Installation Guide](#-detailed-installation-guide)
+7.  [Development Roadmap](#-development-roadmap)
+8.  [Reference Documentation](#-reference-documentation)
+9.  [Contributing](#-contributing)
 
 ---
 
-## 🚀 Tính Năng Cốt Lõi
+## 💡 Why Choose LangEval?
+
+In the era of Agentic AI, traditional evaluation methods (based on text similarity) are no longer sufficient. LangEval addresses the toughest challenges in Enterprise AI:
+
+*   **Behavioral Evaluation (Behavioral Eval)**: Does the Agent follow business processes (SOP)? Does it call the correct Tools?
+*   **Safety & Security**: Can the Agent be Jailbroken? Does it leak PII?
+*   **Automation**: How to test 1000 conversation scenarios without 1000 testers?
+*   **Data Privacy**: Runs entirely On-Premise/Private Cloud, without sending sensitive data externally.
+
+---
+
+## 🚀 Core Features
 
 ### 1. Active Testing & User Simulation 🧪
-*   **Persona-based Simulation**: Tự động sinh hàng ngàn "người dùng ảo" với tính cách khác nhau (Khó tính, Tò mò, Thiếu kiên nhẫn...) sử dụng **Microsoft AutoGen**.
-*   **Multi-turn Conversation**: Đánh giá khả năng duy trì ngữ cảnh qua nhiều lượt hội thoại, không chỉ hỏi-đáp đơn thuần.
-*   **Dynamic Scenarios**: Kịch bản test linh hoạt, hỗ trợ rẽ nhánh logic (Decision Tree).
+*   **Persona-based Simulation**: Automatically generates thousands of "virtual users" with different personalities (Difficult, Curious, Impatient...) using **Microsoft AutoGen**.
+*   **Multi-turn Conversation**: Evaluates the ability to maintain context across multiple conversation turns, beyond simple Q&A.
+*   **Dynamic Scenarios**: Flexible test scenarios supporting logical branching (Decision Tree).
 
 ### 2. DeepEval Integration & Agentic Metrics 🤖
 *   **Tiered Metrics System**:
     *   *Tier 1 (Response)*: Answer Relevancy, Toxicity, Bias.
-    *   *Tier 2 (RAG)*: Faithfulness (Chống ảo giác), Contextual Precision.
-    *   *Tier 3 (Agentic)*: **Tool Correctness**, **Plan Adherence** (Tuân thủ quy trình).
-*   **Custom Metrics**: Hỗ trợ định nghĩa metric riêng bằng G-Eval (LLM-as-a-Judge).
+    *   *Tier 2 (RAG)*: Faithfulness (Anti-hallucination), Contextual Precision.
+    *   *Tier 3 (Agentic)*: **Tool Correctness**, **Plan Adherence** (Process compliance).
+*   **Custom Metrics**: Supports defining custom metrics using G-Eval (LLM-as-a-Judge).
 
 ### 3. Orchestration with LangGraph 🕸️
-*   **State Machine Management**: Quản lý trạng thái phức tạp của quy trình test.
-*   **Self-Correction Loop**: Tự động phát hiện lỗi và thử lại với chiến lược khác (Prompt Mutation) để tìm ra điểm yếu của Agent.
-*   **Human-in-the-loop**: Cơ chế dừng (Breakpoint) để con người can thiệp chấm điểm khi AI không chắc chắn.
+*   **State Machine Management**: Manages complex states of the test process.
+*   **Self-Correction Loop**: Automatically detects errors and retries with different strategies (Prompt Mutation) to find Agent weaknesses.
+*   **Human-in-the-loop**: Breakpoint mechanisms for human intervention and scoring when the AI is uncertain.
 
 ### 4. Enterprise Security & Compliance 🛡️
-*   **Identity Management**: Tích hợp sẵn **Microsoft Entra ID** (Azure AD B2C) cho SSO.
-*   **RBAC Matrix**: Phân quyền chi tiết tới từng nút bấm (Admin, Workspace Owner, AI Engineer, QA, Stakeholder).
-*   **PII Masking**: Tự động che giấu thông tin nhạy cảm (Email, Phone, CC) ngay từ lớp SDK.
+*   **Identity Management**: Pre-integrated with **Microsoft Entra ID** (Azure AD B2C) for SSO.
+*   **RBAC Matrix**: Detailed permission control down to every button (Admin, Workspace Owner, AI Engineer, QA, Stakeholder).
+*   **PII Masking**: Automatically hides sensitive information (Email, Phone, CC) starting from the SDK layer.
 
 ### 5. AI Studio & Comprehensive Dashboard 📊
-*   **Battle Arena**: So sánh A/B Testing giữa 2 phiên bản Agent (Split View).
-*   **Root Cause Analysis (RCA)**: Phân cụm lỗi (Failure Clustering) để biết Agent hay sai ở chủ đề nào.
-*   **Trace Debugger**: Tích hợp Langfuse UI để soi (trace) từng bước suy luận (Thought/Action/Observation).
+*   **Battle Arena**: Compares A/B Testing between two Agent versions (Split View).
+*   **Root Cause Analysis (RCA)**: Failure Clustering to identify where the Agent frequently fails.
+*   **Trace Debugger**: Integrated Langfuse UI to trace every reasoning step (Thought/Action/Observation).
 
 ---
 
-## 🏗️ Kiến Trúc Hệ Thống
+## 🏗️ System Architecture
 
-LangEval áp dụng kiến trúc **Event-Driven Microservices**, tối ưu cho việc triển khai trên Kubernetes (EKS) và khả năng mở rộng chiều ngang (Horizontal Scaling).
+LangEval adopts an **Event-Driven Microservices** architecture, optimized for deployment on Kubernetes (EKS) and horizontal scalability.
 
 ```mermaid
 graph TD
@@ -114,38 +117,38 @@ graph TD
 
 ---
 
-## 🛠️ Công Nghệ Sử Dụng
+## 🛠️ Technology Stack
 
-Chúng tôi chọn lựa các công nghệ "Best-in-Class" cho từng phân lớp:
+We select "Best-in-Class" technologies for each layer:
 
-| Phân Lớp | Công Nghệ | Lý Do Lựa Chọn |
+| Layer | Technology | Reason for Selection |
 | :--- | :--- | :--- |
-| **Frontend** | **Next.js 14**, Shadcn/UI, ReactFlow | Hiệu năng cao, SEO tốt, giao diện Enterprise chuẩn mực. |
-| **Orchestration** | **LangGraph** | Hỗ trợ Cyclic Graph (Vòng lặp) tốt hơn LangChain Chain truyền thống. |
-| **Simulation** | **Microsoft AutoGen** | Framework mạnh nhất hiện nay cho Multi-Agent Conversation. |
-| **Evaluation** | **DeepEval** | Tích hợp sâu với PyTest, hỗ trợ Unit Test cho AI. |
-| **Observability** | **Langfuse** (Self-hosted) | Open Source, bảo mật dữ liệu, giao diện Tracing tuyệt vời. |
-| **Database** | **PostgreSQL**, **ClickHouse**, **Qdrant** | Polyglot Persistence: Đúng DB cho đúng việc (Metadata, Logs, Vectors). |
-| **Queue/Stream** | **Kafka**, **Redis** | Đảm bảo High Throughput và Low Latency cho hàng triệu event. |
+| **Frontend** | **Next.js 14**, Shadcn/UI, ReactFlow | High performance, good SEO, standard Enterprise interface. |
+| **Orchestration** | **LangGraph** | Better support for Cyclic Graphs compared to traditional LangChain Chains. |
+| **Simulation** | **Microsoft AutoGen** | The most powerful framework currently available for Multi-Agent Conversation. |
+| **Evaluation** | **DeepEval** | Deep integration with PyTest, supporting Unit Testing for AI. |
+| **Observability** | **Langfuse** (Self-hosted) | Open Source, data security, excellent Tracing interface. |
+| **Database** | **PostgreSQL**, **ClickHouse**, **Qdrant** | Polyglot Persistence: The right DB for the right job (Metadata, Logs, Vectors). |
+| **Queue/Stream** | **Kafka**, **Redis** | Ensures High Throughput and Low Latency for millions of events. |
 
 ---
 
-## 📂 Cấu Trúc Dự Án
+## 📂 Project Structure
 
-Dự án được tổ chức theo mô hình Monorepo để dễ dàng quản lý và phát triển đồng bộ:
+The project is organized using a Monorepo model for easy management and synchronized development:
 
 ```text
 langeval/
 ├── backend/
-│   ├── data-ingestion/      # Rust service: Xử lý log tốc độ cao từ Kafka vào ClickHouse
-│   ├── evaluation-worker/   # Python service: DeepEval worker chấm điểm
-│   ├── gen-ai-service/      # Python service: Sinh dữ liệu test và Persona
-│   ├── identity-service/    # Python service: Auth & RBAC với Entra ID
+│   ├── data-ingestion/      # Rust service: High-speed log processing from Kafka into ClickHouse
+│   ├── evaluation-worker/   # Python service: DeepEval scoring worker
+│   ├── gen-ai-service/      # Python service: Test data and Persona generation
+│   ├── identity-service/    # Python service: Auth & RBAC with Entra ID
 │   ├── orchestrator/        # Python service: Core logic, LangGraph State Machine
 │   ├── resource-service/    # Python service: CRUD APIs (Agents, Scenarios...)
 │   └── simulation-worker/   # Python service: AutoGen simulators
 ├── evaluation-ui/           # Frontend: Next.js Web Application
-│   ├── docs/                # 📚 Tài liệu dự án chi tiết
+│   ├── docs/                # 📚 Detailed project documentation
 │   └── ...
 ├── infrastructure/          # Terraform, Docker Compose, K8s manifests
 └── ...
@@ -153,96 +156,96 @@ langeval/
 
 ---
 
-## 🚦 Hướng Dẫn Cài Đặt Chi Tiết
+## 🚦 Detailed Installation Guide
 
-### Yêu Cầu Tiên Quyết (Prerequisites)
+### Prerequisites
 *   **Docker & Docker Compose** (v2.20+)
-*   **Python 3.10+** (Khuyên dùng pyenv)
+*   **Python 3.10+** (pyenv recommended)
 *   **Node.js 18+** (LTS)
 *   **Git**
 
-### Bước 1: Clone Repository
+### Step 1: Clone Repository
 ```bash
 git clone https://github.com/your-org/langeval.git
 cd langeval
 ```
 
-### Bước 2: Khởi Tạo Infrastructure
-Chúng ta cần chạy các dịch vụ nền (Databases, Message Queue) trước.
+### Step 2: Initialize Infrastructure
+Run the background services (Databases, Message Queue) first.
 ```bash
-# Khởi chạy PostgreSQL, Redis, Kafka, ClickHouse, Qdrant
+# Start PostgreSQL, Redis, Kafka, ClickHouse, Qdrant
 docker-compose up -d postgres redis kafka clickhouse qdrant
 ```
 
-### Bước 3: Cấu Hình Biến Môi Trường (.env)
-Copy file `.env.example` thành `.env` trong thư mục gốc và các thư mục service.
+### Step 3: Configure Environment Variables (.env)
+Copy the `.env.example` file to `.env` in the root directory and each service directory.
 ```bash
 cp .env.example .env
-# Cập nhật các key quan trọng:
+# Update essential keys:
 # OPENAI_API_KEY=sk-...
 # LANGFUSE_PUBLIC_KEY=...
 # LANGFUSE_SECRET_KEY=...
 ```
 
-### Bước 4: Chạy Backend Services
-Bạn có thể chạy toàn bộ hệ thống bằng Docker Compose:
+### Step 4: Run Backend Services
+You can run the entire system using Docker Compose:
 ```bash
 docker-compose up --build
 ```
-*Lưu ý: Lần đầu build có thể mất 10-15 phút để tải các Docker image.*
+*Note: The first build may take 10-15 minutes to download Docker images.*
 
-### Bước 5: Truy Cập Ứng Dụng
-Sau khi khởi động thành công:
+### Step 5: Access the Application
+After a successful start:
 *   **AI Studio (UI)**: `http://localhost:3000`
 *   **API Gateway**: `http://localhost:8000`
 *   **Langfuse Dashboard**: `http://localhost:3001` (Default credentials: admin/admin)
 
 ### Troubleshooting
-*   **Kafka Connection Error**: Đảm bảo container Kafka đã `healthy` trước khi start các worker.
-*   **Port Conflict**: Kiểm tra các port 3000, 8000, 5432, 6379 có đang bị chiếm dụng không.
+*   **Kafka Connection Error**: Ensure the Kafka container is `healthy` before starting the workers.
+*   **Port Conflict**: Check if ports 3000, 8000, 5432, 6379 are being used.
 
 ---
 
-## 🗺️ Lộ Trình Phát Triển (Roadmap)
+## 🗺️ Development Roadmap
 
-Dự án được chia thành 3 giai đoạn chiến lược:
+The project is divided into 3 strategic phases:
 
 ### Phase 1: The Core Engine (Q1/2026) ✅
-*   [x] Xây dựng Orchestrator Service với LangGraph.
-*   [x] Tích hợp Simulation Worker (AutoGen) và Evaluation Worker (DeepEval).
-*   [x] Hoàn thiện Data Ingestion pipeline với Kafka & ClickHouse.
+*   [x] Build Orchestrator Service with LangGraph.
+*   [x] Integrate Simulation Worker (AutoGen) and Evaluation Worker (DeepEval).
+*   [x] Complete Data Ingestion pipeline with Kafka & ClickHouse.
 
 ### Phase 2: The Studio Experience (Q2/2026) 🚧
-*   [ ] Ra mắt AI Studio với Visual Scenario Builder (Kéo thả).
-*   [ ] Tích hợp Active Red-Teaming (Tấn công tự động).
-*   [ ] Human-in-the-loop Interface (Hàng chờ duyệt điểm).
+*   [ ] Launch AI Studio with Visual Scenario Builder (Drag & Drop).
+*   [ ] Integrate Active Red-Teaming (Automated Attacks).
+*   [ ] Human-in-the-loop Interface (Review Queue for scoring).
 
 ### Phase 3: Scale & Ecosystem (Q3/2026+) 🔮
-*   [ ] Battle Mode (Arena UI) cho A/B Testing.
-*   [ ] Tích hợp CI/CD Pipeline (GitHub Actions Quality Gate).
-*   [ ] Self-Optimization (Thuật toán GEPA tự sửa Prompt).
+*   [ ] Battle Mode (Arena UI) for A/B Testing.
+*   [ ] Integrate CI/CD Pipeline (GitHub Actions Quality Gate).
+*   [ ] Self-Optimization (GEPA algorithm for Prompt self-correction).
 
 ---
 
-## 📚 Tài Liệu Tham Khảo
+## 📚 Reference Documentation
 
-Hệ thống tài liệu đầy đủ (Architecture, API, Database, Deployment) nằm trong thư mục `evaluation-ui/docs/`. Đây là nguồn sự thật duy nhất (Single Source of Truth).
+The comprehensive documentation system (Architecture, API, Database, Deployment) is located in the `evaluation-ui/docs/` directory. This is the Single Source of Truth.
 
-*   **Tổng quan**: [Master Plan](evaluation-ui/docs/00-Master-Plan.md), [Business Requirements](evaluation-ui/docs/00-Business-Requirements.md)
-*   **Kỹ thuật**: [System Architecture](evaluation-ui/docs/01-System-Architecture.md), [Database Design](evaluation-ui/docs/03-Database-Design.md), [API Spec](evaluation-ui/docs/04-API-Microservices-Spec.md)
-*   **Vận hành**: [Deployment & DevOps](evaluation-ui/docs/06-Deployment-DevOps.md), [Security](evaluation-ui/docs/07-Security-Compliance.md)
+*   **Overview**: [Master Plan](evaluation-ui/docs/00-Master-Plan.md), [Business Requirements](evaluation-ui/docs/00-Business-Requirements.md)
+*   **Technical**: [System Architecture](evaluation-ui/docs/01-System-Architecture.md), [Database Design](evaluation-ui/docs/03-Database-Design.md), [API Spec](evaluation-ui/docs/04-API-Microservices-Spec.md)
+*   **Operations**: [Deployment & DevOps](evaluation-ui/docs/06-Deployment-DevOps.md), [Security](evaluation-ui/docs/07-Security-Compliance.md)
 
 ---
 
-## 🤝 Đóng Góp
+## 🤝 Contributing
 
-Chúng tôi áp dụng quy trình **Vibe Coding** (AI-Assisted Development). Vui lòng đọc kỹ [CONTRIBUTING.md](CONTRIBUTING.md) để hiểu cách sử dụng AI Tools đóng góp hiệu quả và đúng chuẩn dự án.
+We adopt the **Vibe Coding** (AI-Assisted Development) process. Please carefully read [CONTRIBUTING.md](CONTRIBUTING.md) to understand how to use AI tools to contribute effectively and according to project standards.
 
 ---
 
 ## 📄 License
 
-Dự án này được cấp phép theo giấy phép MIT. Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
 ---
 **LangEval Team** - *Empowering Enterprise AI with Confidence*
