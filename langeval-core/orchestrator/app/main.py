@@ -19,6 +19,6 @@ app = FastAPI(
     ]
 )
 
-app.include_router(campaigns.router)
-app.include_router(battle.router)
-app.include_router(benchmarks.router, prefix="/api/v1/benchmarks", tags=["benchmarks"])
+app.include_router(campaigns.router, prefix="/api/v1/orchestrator", tags=["campaigns"])
+app.include_router(battle.router, prefix="/api/v1/orchestrator", tags=["battle"])
+app.include_router(benchmarks.router, prefix="/api/v1/orchestrator/benchmarks", tags=["benchmarks"])

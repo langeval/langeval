@@ -10,4 +10,4 @@ app = FastAPI(
     ]
 )
 
-app.include_router(gen_ai.router)
+app.include_router(gen_ai.router, prefix="/api/v1/gen-ai", tags=["gen-ai"])

@@ -10,7 +10,7 @@ from app.services.battle_arena_workflow import build_comparison_graph
 from app.services.adversarial_workflow import build_adversarial_graph
 from app.services.checkpointer import get_checkpointer, get_redis_client
 
-router = APIRouter(prefix="/orchestrator/battle")
+router = APIRouter(prefix="/battle")
 
 async def run_battle_background(campaign_id: str, req: CreateBattleRequest):
     print(f"--- BACKGROUND BATTLE START: {campaign_id} ---")

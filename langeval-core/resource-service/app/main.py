@@ -39,7 +39,7 @@ root_router = APIRouter()
 def health_check():
     return {"status": "ok", "service": "resource-service"}
 
-@root_router.post("/resource/reset-db")
+@root_router.post("/api/v1/resource/reset-db")
 def reset_database(session: Session = Depends(get_session)):
     # Drop all tables and recreate to ensure schema is fresh
     SQLModel.metadata.drop_all(engine)
@@ -47,4 +47,4 @@ def reset_database(session: Session = Depends(get_session)):
     return {"status": "cleared_and_recreated"}
 
 app.include_router(root_router)
-app.include_router(api_router)
+app.include_router(api_router, prefix="/api/v1/resource")

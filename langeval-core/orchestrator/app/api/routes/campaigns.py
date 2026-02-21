@@ -54,7 +54,7 @@ async def check_workspace_quota(workspace_id: str):
     except httpx.RequestError as e:
         print(f"Warning: Could not connect to Billing Service to check quota: {e}")
 
-router = APIRouter(prefix="/orchestrator")
+router = APIRouter()
 
 @router.get("/health")
 def health_check():
