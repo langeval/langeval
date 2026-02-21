@@ -12,7 +12,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter, usePathname } from '@/i18n/routing';
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import RoadmapSection from './roadmap-section';
 import PricingSection from './pricing-section';
 
@@ -153,7 +153,9 @@ export default function LandingPage() {
                                     <MenuIcon className="w-5 h-5" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="right" className="bg-[#0B0F19] border-white/10 text-slate-300">
+                            <SheetContent side="right" className="bg-[#0B0F19] border-white/10 text-slate-300 p-6">
+                                <SheetTitle className="sr-only">Menu</SheetTitle>
+                                <SheetDescription className="sr-only">Mobile navigation menu</SheetDescription>
                                 <div className="flex flex-col gap-6 mt-8">
                                     <div className="flex flex-col gap-4 text-lg font-medium">
                                         <a href="#features" className="hover:text-white transition-colors py-2 border-b border-white/5">{t('Navbar.features')}</a>
