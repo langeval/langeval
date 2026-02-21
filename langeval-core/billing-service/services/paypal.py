@@ -8,13 +8,18 @@ PAYPAL_MODE = os.getenv("PAYPAL_MODE", "sandbox")
 
 BASE_URL = "https://api-m.sandbox.paypal.com" if PAYPAL_MODE == "sandbox" else "https://api-m.paypal.com"
 
-PAYPAL_PRO_PLAN_ID = os.getenv("PAYPAL_PRO_PLAN_ID", "P-4M46098059882255NMW2S46Y")
-PAYPAL_ENTERPRISE_PLAN_ID = os.getenv("PAYPAL_ENTERPRISE_PLAN_ID", "P-5R632420M4870274WMW2S5QA")
+PAYPAL_PRO_PLAN_ID = os.getenv("PAYPAL_PRO_PLAN_ID", "P-0MD61176KG488245ENA4XY3I")
+PAYPAL_ENTERPRISE_PLAN_ID = os.getenv("PAYPAL_ENTERPRISE_PLAN_ID", "P-0MD61176KG488245ENA4XY3I")
+
+PAYPAL_PRO_ANNUAL_PLAN_ID = os.getenv("PAYPAL_PRO_ANNUAL_PLAN_ID", "P-0MD61176KG488245ENA4XY3I")
+PAYPAL_ENTERPRISE_ANNUAL_PLAN_ID = os.getenv("PAYPAL_ENTERPRISE_ANNUAL_PLAN_ID", "P-0MD61176KG488245ENA4XY3I")
 
 # The following IDs should match the ones created in your PayPal Developer Sandbox Dashboard
 PAYPAL_PLAN_MAPPING = {
-    "Pro": PAYPAL_PRO_PLAN_ID,
-    "Enterprise": PAYPAL_ENTERPRISE_PLAN_ID
+    "Pro_monthly": PAYPAL_PRO_PLAN_ID,
+    "Enterprise_monthly": PAYPAL_ENTERPRISE_PLAN_ID,
+    "Pro_yearly": PAYPAL_PRO_ANNUAL_PLAN_ID,
+    "Enterprise_yearly": PAYPAL_ENTERPRISE_ANNUAL_PLAN_ID
 }
 
 async def get_access_token() -> str:
@@ -40,11 +45,18 @@ async def get_access_token() -> str:
         response.raise_for_status()
         return response.json()["access_token"]
 
-async def create_subscription(plan_name: str, workspace_id: str, return_url: str, cancel_url: str) -> dict:
+async def create_subscription(plan_name: str, workspace_id: str, return_url: str, cancel_url: str, is_yearly: bool = False) -> dict:
     """Creates a PayPal subscription and returns the approval URL."""
-    paypal_plan_id = PAYPAL_PLAN_MAPPING.get(plan_name)
+    cycle = "yearly" if is_yearly else "monthly"
+    mapping_key = f"{plan_name}_{cycle}"
+    paypal_plan_id = PAYPAL_PLAN_MAPPING.get(mapping_key)
+    
+    # Fallback to monthly if yearly not found (though it should be)
     if not paypal_plan_id:
-        raise ValueError(f"No PayPal Plan ID mapped for {plan_name}")
+        paypal_plan_id = PAYPAL_PLAN_MAPPING.get(f"{plan_name}_monthly")
+        
+    if not paypal_plan_id:
+        raise ValueError(f"No PayPal Plan ID mapped for {plan_name} ({cycle})")
 
     if PAYPAL_CLIENT_ID == "mock_client_id":
         # Simulate successful response for testing without real credentials

@@ -36,7 +36,8 @@ export default function BillingPage() {
 
                 if (isSuccess === "true" && subId) {
                     try {
-                        await confirmCheckoutSession(workspaceId, subId, planId || undefined);
+                        const isYearlyParam = searchParams.get("is_yearly") === "true";
+                        await confirmCheckoutSession(workspaceId, subId, planId || undefined, isYearlyParam);
                         // Remove query params to prevent re-triggering
                         router.replace("/settings/billing", { scroll: false });
                     } catch (e) {
@@ -75,7 +76,7 @@ export default function BillingPage() {
             const workspaceId = localStorage.getItem("langeval_current_workspace_id");
             if (!workspaceId) return;
 
-            const res = await createCheckoutSession(workspaceId, planId);
+            const res = await createCheckoutSession(workspaceId, planId, isYearly);
             if (res.checkout_url) {
                 window.location.href = res.checkout_url;
             }
@@ -277,23 +278,25 @@ export default function BillingPage() {
                                     )}
                                 </ul>
                                 <Button
-                                    className={`w-full h-12 rounded-xl font-bold text-base transition-all ${isCurrent ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 cursor-default" : "bg-white/5 hover:bg-white/10 text-white border border-white/10"}`}
+                                    className={`w-full h-12 rounded-xl font-bold text-base transition-all ${isCurrent && plan.name === "Free" ? "bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/25 cursor-default" : isCurrent && plan.name !== "Free" ? "bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/25" : "bg-white/5 hover:bg-white/10 text-white border border-white/10"}`}
                                     variant={isCurrent ? "default" : "secondary"}
                                     disabled={
-                                        isCurrent ||
+                                        (isCurrent && plan.name === "Free") ||
                                         checkoutLoading === plan.id ||
                                         (isEnterprise && (plan.name === "Pro" || plan.name === "Free")) ||
                                         (isPro && plan.name === "Free")
                                     }
-                                    onClick={() => !isCurrent && handleUpgrade(plan.id)}
+                                    onClick={() => handleUpgrade(plan.id)}
                                 >
                                     {checkoutLoading === plan.id
                                         ? t("Pricing.processing_button")
-                                        : isCurrent
+                                        : (isCurrent && plan.name === "Free")
                                             ? t("Pricing.active_plan_button")
-                                            : ((isEnterprise && (plan.name === "Pro" || plan.name === "Free")) || (isPro && plan.name === "Free"))
-                                                ? t("Pricing.downgrade_unavailable")
-                                                : t("Pricing.upgrade_button")}
+                                            : (isCurrent && plan.name !== "Free")
+                                                ? t("Pricing.extend_subscription")
+                                                : ((isEnterprise && (plan.name === "Pro" || plan.name === "Free")) || (isPro && plan.name === "Free"))
+                                                    ? t("Pricing.downgrade_unavailable")
+                                                    : t("Pricing.upgrade_button")}
                                     {!isCurrent && plan.name !== "Free" && plan.name !== "Pro" && <CreditCardIcon className="w-4 h-4 ml-2" />}
                                     {!isCurrent && plan.name === "Pro" && !isEnterprise && <CreditCardIcon className="w-4 h-4 ml-2" />}
                                 </Button>

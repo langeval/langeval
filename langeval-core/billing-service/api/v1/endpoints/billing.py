@@ -70,6 +70,7 @@ async def get_current_subscription(
 class CheckoutRequest(BaseModel):
     workspace_id: uuid.UUID
     plan_id: uuid.UUID
+    is_yearly: bool = False
 
 @router.post("/checkout")
 async def create_checkout_session(
@@ -89,11 +90,11 @@ async def create_checkout_session(
     # In production, this should be the frontend's base URL
     origin = request.headers.get("origin", "http://localhost:3000")
     # Pass plan_id so the frontend knows what plan was just paid for
-    return_url = f"{origin}/settings/billing?success=true&workspace_id={req.workspace_id}&plan_id={req.plan_id}"
+    return_url = f"{origin}/settings/billing?success=true&workspace_id={req.workspace_id}&plan_id={req.plan_id}&is_yearly={str(req.is_yearly).lower()}"
     cancel_url = f"{origin}/settings/billing?canceled=true"
 
     try:
-        sub_response = await create_subscription(plan.name, str(req.workspace_id), return_url, cancel_url)
+        sub_response = await create_subscription(plan.name, str(req.workspace_id), return_url, cancel_url, req.is_yearly)
         # Find the 'approve' link
         approve_link = next((link["href"] for link in sub_response.get("links", []) if link["rel"] == "approve"), None)
         
@@ -116,6 +117,7 @@ class CheckoutSuccessRequest(BaseModel):
     workspace_id: uuid.UUID
     subscription_id: str
     plan_id: Optional[uuid.UUID] = None
+    is_yearly: bool = False
 
 @router.post("/checkout/success")
 async def checkout_success(
@@ -151,13 +153,20 @@ async def checkout_success(
              paid_amount = plan.price_monthly
              
         # Update Subscription
+        is_same_plan = sub.plan_id == plan.id if plan else False
         sub.status = "active"
         sub.paypal_sub_id = req.subscription_id
         if plan:
             sub.plan_id = plan.id
             
         import datetime
-        if next_billing_time:
+        now = datetime.datetime.utcnow()
+        if is_same_plan and sub.period_end and sub.period_end > now:
+            # Extending existing plan manually
+            days_to_add = 365 if req.is_yearly else 30
+            sub.period_end = sub.period_end + datetime.timedelta(days=days_to_add)
+        elif next_billing_time:
+            # New or replaced plan
             try:
                 sub.period_end = datetime.datetime.fromisoformat(next_billing_time.replace("Z", "+00:00")).replace(tzinfo=None)
             except Exception as e:

@@ -880,6 +880,7 @@
     "disabled": "Disabled",
     "unlimited": "Unlimited",
     "active_plan_button": "Active Plan",
+    "extend_subscription": "Extend Subscription",
     "upgrade_button": "Upgrade",
     "processing_button": "Processing...",
     "downgrade_unavailable": "Downgrade Unavailable",
