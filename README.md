@@ -159,6 +159,26 @@ Once everything is running:
 
 ---
 
+## 🔧 Troubleshooting
+
+### Nginx "AccessDenied" or "404 Not Found" during Google Login
+If you recently restarted Docker containers, Nginx might have cached stale internal IP addresses for the `identity-service` and `resource-service` containers (Docker DNS Caching issue).
+To force Nginx to re-resolve the internal Docker networks, simply restart the Nginx container:
+```bash
+docker compose restart nginx
+```
+
+### Nginx Container Crash Loop (Missing SSL Files)
+If you cleared the `certbot/conf` directory (e.g., via `docker compose down -v`), Nginx may fail to start with the error `[emerg] open() "/etc/letsencrypt/options-ssl-nginx.conf" failed`. 
+To restore the missing default Let's Encrypt configuration files securely without recreating all certificates, run:
+```bash
+curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > certbot/conf/options-ssl-nginx.conf
+curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > certbot/conf/ssl-dhparams.pem
+docker compose restart nginx
+```
+
+---
+
 ## 🤝 Contributing
 
 We adopt the **Vibe Coding** (AI-Assisted Development) process. We welcome contributions from the community!

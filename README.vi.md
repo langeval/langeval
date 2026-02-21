@@ -159,6 +159,26 @@ Sau khi khởi động thành công:
 
 ---
 
+## 🔧 Xử Lý Sự Cố (Troubleshooting)
+
+### Lỗi "AccessDenied" hoặc "404 Not Found" khi Đăng nhập Google
+Nếu bạn vừa khởi động lại Docker container, Nginx có thể đã lưu cache các địa chỉ IP nội bộ cũ của `identity-service` và `resource-service` (Lỗi Docker DNS Caching). 
+Để bắt Nginx phải phân giải lại chính xác mạng lưới nội bộ của Docker, chỉ cần khởi động lại container Nginx:
+```bash
+docker compose restart nginx
+```
+
+### Nginx Crash Loop (Thiếu File Cấu Hình SSL)
+Nếu bạn lỡ xóa thư mục `certbot/conf` (ví dụ: dùng lệnh `docker compose down -v`), Nginx sẽ báo lỗi không thể khởi động: `[emerg] open() "/etc/letsencrypt/options-ssl-nginx.conf" failed`.
+Để khôi phục lại các file cấu hình tiêu chuẩn của Let's Encrypt bị thiếu mà không cần phải xóa và tạo lại toàn bộ chứng chỉ, hãy chạy lệnh sau ở thư mục chứa file `docker-compose.yml`:
+```bash
+curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot-nginx/certbot_nginx/_internal/tls_configs/options-ssl-nginx.conf > certbot/conf/options-ssl-nginx.conf
+curl -s https://raw.githubusercontent.com/certbot/certbot/master/certbot/certbot/ssl-dhparams.pem > certbot/conf/ssl-dhparams.pem
+docker compose restart nginx
+```
+
+---
+
 ## 🤝 Đóng Góp
 
 Chúng tôi áp dụng quy trình **Vibe Coding** (AI-Assisted Development). Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng!

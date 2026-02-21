@@ -150,7 +150,7 @@ async def checkout_success(
              
         # Optional: update amount from plan if PayPal is extremely delayed
         if paid_amount == 0 and plan:
-             paid_amount = plan.price_monthly
+             paid_amount = plan.price_annual if req.is_yearly else plan.price_monthly
              
         # Update Subscription
         is_same_plan = sub.plan_id == plan.id if plan else False
@@ -179,7 +179,7 @@ async def checkout_success(
             select(Transaction)
             .where(Transaction.workspace_id == req.workspace_id)
             .where(Transaction.subscription_id == sub.id)
-            .where(Transaction.created_at > datetime.datetime.utcnow() - datetime.timedelta(minutes=5))
+            .where(Transaction.created_at > datetime.datetime.utcnow() - datetime.timedelta(seconds=30))
             .order_by(Transaction.created_at.desc())
         ).first()
 
