@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 # Configuration (Move to verify_env.py or config later)
 SECRET_KEY = "your-super-secret-key-here" # Matches frontend .env
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 30 # 30 days, matches NextAuth default session length
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
